@@ -5,8 +5,7 @@ import App from './App';
 import { Provider } from 'react-redux';
 
 import store from './store';
-import * as serviceWorker from './serviceWorker';
-import reportWebVitals from './reportWebVitals.js'
+
 
 ReactDOM.render(
   <Provider store={store}>
@@ -15,4 +14,3 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-serviceWorker.unregister();

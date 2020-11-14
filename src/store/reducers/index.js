@@ -1,17 +1,15 @@
 //INITIAL STATE
-import {ADD_ALUMNO, ADD_CURSO} from '../constants/action_types'
+import {ADD_ALUMNO, UPDATE_CURSO} from '../constants/action_types'
 
 const initialState = {
-    cursos: [
-        {
-            nombre: 'A',
-            alumnos: []
-        },
-        {
-            nombre: 'B',
-            alumnos: []
-        }
-    ],
+  curso: '2-1-B',
+  alumnos: [
+    {
+      id: 1,
+      nombre: "Jorge",
+      apellido: "Perez"
+    }
+  ]
 }
 
 function rootReducer(state=initialState, action) {
@@ -21,7 +19,7 @@ function rootReducer(state=initialState, action) {
         console.log('Agregar alumno: ' + action.data)
         // state.materias.push(action.data)
         state = Object.assign({}, state , {
-          cursos: state.cursos.alumnos.concat(action.data)
+          alumnos: state.alumnos.concat(action.data)
         })
         break
     
@@ -32,7 +30,8 @@ function rootReducer(state=initialState, action) {
         state = Object.assign({}, state , {
           curso: action.data
         })
-        break 
+        break
+        
     }
   
     return state
