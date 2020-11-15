@@ -1,4 +1,4 @@
-import { ADD_ALUMNO, UPDATE_CURSO } from '../constants/action_types'
+import { ADD_ALUMNO, DELETE_ALUMNO, EDIT_ALUMNO } from '../constants/action_types'
 
 export function addAlumno(data){
     return{
@@ -7,10 +7,16 @@ export function addAlumno(data){
     }
 }
 
-export function updateCurso(data) {
-    return {
-      type: UPDATE_CURSO,
-      data
-    }
+export function deleteAlumno(data) {
+  return {
+    type: DELETE_ALUMNO,
+    data
   }
-  
+}
+
+export function editAlumno(data) {
+  return {
+    type: EDIT_ALUMNO,
+    data
+  }
+}

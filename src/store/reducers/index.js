@@ -1,5 +1,4 @@
-//INITIAL STATE
-import {ADD_ALUMNO, UPDATE_CURSO} from '../constants/action_types'
+import {ADD_ALUMNO, DELETE_ALUMNO, EDIT_ALUMNO} from '../constants/action_types'
 
 const initialState = {
   curso: '2-1-B',
@@ -8,6 +7,16 @@ const initialState = {
       id: 1,
       nombre: "Jorge",
       apellido: "Perez"
+    },
+    {
+      id: 2,
+      nombre: "Gustavo",
+      apellido: "González"
+    },
+    {
+      id: 3,
+      nombre: 'Pedro',
+      apellido: 'Barrios'
     }
   ]
 }
@@ -16,24 +25,28 @@ function rootReducer(state=initialState, action) {
 
     switch (action.type) {
       case ADD_ALUMNO:
-        console.log('Agregar alumno: ' + action.data)
-        // state.materias.push(action.data)
         state = Object.assign({}, state , {
           alumnos: state.alumnos.concat(action.data)
         })
         break
-    
-       case UPDATE_CURSO:
-        console.log('ACTUALIZAR curso: ' + action.data)
-        // state.instituto = action.data
-  
+
+      case DELETE_ALUMNO:
+
+        const aux = state.alumnos.filter(element => element.id !== action.data.id)
         state = Object.assign({}, state , {
-          curso: action.data
-        })
+         alumnos: aux
+        }) 
+
         break
+
+      case EDIT_ALUMNO:
+
+        break
+
+      default:
         
+        break
     }
-  
     return state
   }
   
