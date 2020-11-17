@@ -7,7 +7,7 @@ import { Modal,ModalHeader,ModalBody,FormGroup, ModalFooter} from 'reactstrap'
 const mapStateToProps = (state) => {
     return {
         propiedadCurso: state.curso,
-        propiedadAlumnos: state.alumnos
+        propiedadAlumnos: state.alumnos,
     }
 }
 
@@ -27,40 +27,57 @@ class ListComponent extends Component {
       this.apellidoAlumno = React.createRef();
   
       this.agregarAlumno = this.agregarAlumno.bind(this) 
+      this.editarAlumno = this.editarAlumno.bind(this)
+      this.toggle = this.toggle.bind(this);
 
-      this.form = {
-        modalActualizar: false
-      }
+      this.state = {  //SIN ESTO NO FUNCIONA EL MODAL FORM
+        modal: false
+      };
+
     }
 
-    mostrarModalActualizar = (dato) => {
-      this.form.modalActualizar = true
-    };   
 
     agregarAlumno() {
-        this.props.propiedadAddAlumno({
-          id: this.props.propiedadAlumnos.length + 1,
-          nombre: this.nombreAlumno.current.value,
-          apellido: this.apellidoAlumno.current.value
-        })
+      this.props.propiedadAddAlumno({
+        id: this.props.propiedadAlumnos.length + 1,
+        nombre: this.nombreAlumno.current.value,
+        apellido: this.apellidoAlumno.current.value
+      })
+      this.resetFields()
     }
-
+    
     eliminarAlumno(el) {
       let opcion = window.confirm("Está seguro de eliminar a " +  el.nombre + " " + el.apellido + " ?")
       if(opcion===true){
-        this.props.propiedadDeleteAlumno({
-          id: el.id,
-        })
+        this.props.propiedadDeleteAlumno({id: el.id})
       }
     }
-
+    
     editarAlumno(el){
-      this.props.propiedadEditAlumno({
+      this.toggle()
+      this.returnStateObject(el)
+      /*this.props.propiedadEditAlumno({
         id: el.id,
         nombre: el.nombre,
         apellido: el.apellido
-      })
+      })  */
     }
+    
+    returnStateObject(el) {
+      console.log('RETURNSTATEOBJECT')
+      this.idAlumno = el.id
+      this.nombreAlumno.current.value = el.nombre
+      this.apellidoAlumno.current.value = el.apellido
+    }
+    toggle() {
+      //HACE VISIBLE O INVISIBLE EL MODAL
+      this.setState({modal: !this.state.modal})
+    }
+    resetFields(){
+      this.nombreAlumno.current.value = ''
+      this.apellidoAlumno.current.value = ''
+    }
+
 
     render() {
         return (
@@ -98,23 +115,13 @@ class ListComponent extends Component {
                   {
                     this.props.propiedadAlumnos.map(el => (
                       <tr>
-                          <td key={el.id}>
-                            {el.id}
-                          </td>
-                          <td key={el.nombre}>
-                            {el.nombre}
-                          </td>
-                          <td key={el.apellido}>
-                            {el.apellido}
-                          </td>
+                          <td key={el.id}>{el.id}</td>
+                          <td key={el.nombre}>{el.nombre}</td>
+                          <td key={el.apellido}>{el.apellido}</td>
                           <td>
-                            <Button id="editar" variant="primary" onClick={() => this.editarAlumno(el) }>
-                              Editar
-                            </Button>
+                            <Button id="editar" variant="primary" onClick={() => this.editarAlumno(el) }>Editar</Button>
                             {"  "}
-                            <Button id="borrar" variant="danger" onClick={() => this.eliminarAlumno(el) }>
-                              Borrar
-                            </Button>
+                            <Button id="borrar" variant="danger" onClick={() => this.eliminarAlumno(el) }>Borrar</Button>
                           </td>
                       </tr>
                     ))
@@ -122,8 +129,8 @@ class ListComponent extends Component {
               </tbody>
             </Table>
 
-            <Modal isOpen={this.form.modalActualizar}>
-              <ModalHeader><div><h3>Editar Registro</h3></div></ModalHeader>
+            <Modal isOpen={this.state.modal} toggle={this.toggle}>
+              <ModalHeader ><div><h3>Editar Alumno</h3></div></ModalHeader>
 
               <ModalBody>
                 <FormGroup>
@@ -135,7 +142,7 @@ class ListComponent extends Component {
                     className="form-control"
                     readOnly
                     type="text"
-                    value='NULL'
+                    ref={this.idAlumno}
                   />
                 </FormGroup>
                 
@@ -147,8 +154,7 @@ class ListComponent extends Component {
                     className="form-control"
                     name="nombre"
                     type="text"
-                    onChange={this.handleChange}
-                    value=''
+                    ref={this.nombreAlumno}
                   />
                 </FormGroup>
                 
@@ -160,89 +166,27 @@ class ListComponent extends Component {
                     className="form-control"
                     name="apellido"
                     type="text"
-                    onChange={this.handleChange}
-                    value=''
+                    ref={this.apellidoAlumno}
                   />
                 </FormGroup>
               </ModalBody>
 
               <ModalFooter>
                 <Button
-                  color="primary"
-                  onClick={() => this.editar(this.form)}
+                  color="success"
+                  onClick={this.toggle}
                 >
                   Editar
                 </Button>
                 <Button
                   color="danger"
-                  onClick={() => this.cerrarModalActualizar()}
+                  onClick={this.toggle}
                 >
                   Cancelar
                 </Button>
               </ModalFooter>
             </Modal>
 
-
-
-{/*             <Modal isOpen={this.state.modalInsertar}>
-              <ModalHeader>
-              <div><h3>Insertar Personaje</h3></div>
-              </ModalHeader>
-
-              <ModalBody>
-                <FormGroup>
-                  <label>
-                    Id: 
-                  </label>
-                  
-                  <input
-                    className="form-control"
-                    readOnly
-                    type="text"
-                    value={this.state.data.length+1}
-                  />
-                </FormGroup>
-                
-                <FormGroup>
-                  <label>
-                    Personaje: 
-                  </label>
-                  <input
-                    className="form-control"
-                    name="personaje"
-                    type="text"
-                    onChange={this.handleChange}
-                  />
-                </FormGroup>
-                
-                <FormGroup>
-                  <label>
-                    Anime: 
-                  </label>
-                  <input
-                    className="form-control"
-                    name="anime"
-                    type="text"
-                    onChange={this.handleChange}
-                  />
-                </FormGroup>
-              </ModalBody>
-
-              <ModalFooter>
-                <Button
-                  color="primary"
-                  onClick={() => this.insertar()}
-                >
-                  Insertar
-                </Button>
-                <Button
-                  className="btn btn-danger"
-                  onClick={() => this.cerrarModalInsertar()}
-                >
-                  Cancelar
-                </Button>
-              </ModalFooter>
-            </Modal> */}
           </div>
         )
     }

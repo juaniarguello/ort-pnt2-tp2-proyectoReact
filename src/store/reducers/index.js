@@ -18,8 +18,23 @@ const initialState = {
       nombre: 'Pedro',
       apellido: 'Barrios'
     }
-  ]
+  ],
 }
+
+function getIndexAlumno(id){
+  let i=0;
+  let encontrado=false;
+  let alumno=null;
+  while(!encontrado && i<initialState.alumnos.length){
+    alumno = initialState.alumnos[i];
+    if(alumno.id === id){
+      encontrado = true;
+    } else {
+       i++  
+      }  
+  }
+  return i;
+} 
 
 function rootReducer(state=initialState, action) {
 
@@ -31,16 +46,15 @@ function rootReducer(state=initialState, action) {
         break
 
       case DELETE_ALUMNO:
-
         const aux = state.alumnos.filter(element => element.id !== action.data.id)
         state = Object.assign({}, state , {
          alumnos: aux
         }) 
-
         break
 
       case EDIT_ALUMNO:
-
+        const indexAlumno = getIndexAlumno(action.data.id)
+        state.alumnos[indexAlumno] = action.data
         break
 
       default:
