@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import React, { Component } from 'react'
 import { addAlumno, deleteAlumno, editAlumno } from '../store/actions'
 import { Form, Button, Table } from 'react-bootstrap'
-import { Modal,ModalHeader,ModalBody,FormGroup, ModalFooter} from 'reactstrap'
+
 
 const mapStateToProps = (state) => {
     return {
@@ -28,14 +28,7 @@ class ListComponent extends Component {
   
       this.agregarAlumno = this.agregarAlumno.bind(this) 
       this.editarAlumno = this.editarAlumno.bind(this)
-      this.toggle = this.toggle.bind(this);
-
-      this.state = {  //SIN ESTO NO FUNCIONA EL MODAL FORM
-        modal: false
-      };
-
     }
-
 
     agregarAlumno() {
       this.props.propiedadAddAlumno({
@@ -54,13 +47,12 @@ class ListComponent extends Component {
     }
     
     editarAlumno(el){
-      this.toggle()
       this.returnStateObject(el)
-      /*this.props.propiedadEditAlumno({
-        id: el.id,
-        nombre: el.nombre,
-        apellido: el.apellido
-      })  */
+      this.props.propiedadAddAlumno({
+      id: el.id,
+      nombre: el.nombre,
+      apellido: el.apellido
+      }) 
     }
     
     returnStateObject(el) {
@@ -69,10 +61,7 @@ class ListComponent extends Component {
       this.nombreAlumno.current.value = el.nombre
       this.apellidoAlumno.current.value = el.apellido
     }
-    toggle() {
-      //HACE VISIBLE O INVISIBLE EL MODAL
-      this.setState({modal: !this.state.modal})
-    }
+
     resetFields(){
       this.nombreAlumno.current.value = ''
       this.apellidoAlumno.current.value = ''
@@ -128,64 +117,6 @@ class ListComponent extends Component {
                   }
               </tbody>
             </Table>
-
-            <Modal isOpen={this.state.modal} toggle={this.toggle}>
-              <ModalHeader ><div><h3>Editar Alumno</h3></div></ModalHeader>
-
-              <ModalBody>
-                <FormGroup>
-                  <label>
-                  Id:
-                  </label>
-                
-                  <input
-                    className="form-control"
-                    readOnly
-                    type="text"
-                    ref={this.idAlumno}
-                  />
-                </FormGroup>
-                
-                <FormGroup>
-                  <label>
-                    Nombre: 
-                  </label>
-                  <input
-                    className="form-control"
-                    name="nombre"
-                    type="text"
-                    ref={this.nombreAlumno}
-                  />
-                </FormGroup>
-                
-                <FormGroup>
-                  <label>
-                    Apellido: 
-                  </label>
-                  <input
-                    className="form-control"
-                    name="apellido"
-                    type="text"
-                    ref={this.apellidoAlumno}
-                  />
-                </FormGroup>
-              </ModalBody>
-
-              <ModalFooter>
-                <Button
-                  color="success"
-                  onClick={this.toggle}
-                >
-                  Editar
-                </Button>
-                <Button
-                  color="danger"
-                  onClick={this.toggle}
-                >
-                  Cancelar
-                </Button>
-              </ModalFooter>
-            </Modal>
 
           </div>
         )

@@ -34,15 +34,25 @@ function getIndexAlumno(id){
       }  
   }
   return i;
-} 
+}
+
 
 function rootReducer(state=initialState, action) {
 
     switch (action.type) {
       case ADD_ALUMNO:
-        state = Object.assign({}, state , {
-          alumnos: state.alumnos.concat(action.data)
-        })
+        console.log('ID:' + action.data.id)
+        console.log('IA'+ getIndexAlumno(action.data.id) )
+        if(getIndexAlumno(action.data.id)!==-1){      //SI EXISTE EL ALUMNO, LO REEMPLAZO CON LOS DATOS NUEVOS
+          state.alumnos[action.data.id] = action.data
+          console.log('paso 1 ')
+        } else {   //Si no existe el alumno, lo agrego como uno nuevo
+          console.log('concatedo')
+          state = Object.assign({}, state , {
+            alumnos: state.alumnos.concat(action.data)
+          })
+        }
+        
         break
 
       case DELETE_ALUMNO:
