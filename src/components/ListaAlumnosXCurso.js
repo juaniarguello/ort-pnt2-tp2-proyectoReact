@@ -3,7 +3,6 @@ import React, { Component } from 'react'
 import { addAlumno, deleteAlumno, editAlumno } from '../store/actions'
 import { Form, Button, Table } from 'react-bootstrap'
 
-
 const mapStateToProps = (state) => {
     return {
         propiedadCurso: state.curso,
@@ -46,23 +45,24 @@ class ListComponent extends Component {
       }
     }
     
-    editarAlumno(el){
-      this.returnStateObject(el)
-      this.props.propiedadAddAlumno({
-      id: el.id,
-      nombre: el.nombre,
-      apellido: el.apellido
-      }) 
+
+
+    editarAlumno(){
+      this.props.propiedadEditAlumno({
+        id: this.idAlumno.current.value,
+        nombre: this.nombreAlumno.current.value,
+        apellido: this.apellidoAlumno.current.value
+      })  
     }
     
     returnStateObject(el) {
-      console.log('RETURNSTATEOBJECT')
-      this.idAlumno = el.id
+      this.idAlumno.current.value = el.id
       this.nombreAlumno.current.value = el.nombre
       this.apellidoAlumno.current.value = el.apellido
     }
 
     resetFields(){
+      this.idAlumno.current.value = ''
       this.nombreAlumno.current.value = ''
       this.apellidoAlumno.current.value = ''
     }
@@ -76,6 +76,10 @@ class ListComponent extends Component {
             <hr />
             
             <Form>
+            <Form.Group>
+                <Form.Label >ID</Form.Label>
+                <Form.Control type="text" id="nombre" ref={this.idAlumno} readOnly="1" />
+              </Form.Group>
               <Form.Group>
                 <Form.Label >Nombre del Alumno</Form.Label>
                 <Form.Control type="text" id="nombre" ref={this.nombreAlumno} placeholder="Ingresar nombre" />
@@ -86,6 +90,9 @@ class ListComponent extends Component {
               </Form.Group>
               <Button id="agregarAlumno" variant="success" onClick={ this.agregarAlumno }>
                 Agregar
+              </Button> {'        '}
+              <Button id="btnEditarAlumno" variant="primary" onClick={this.editarAlumno }>
+                Editar
               </Button>
             </Form>
 
@@ -108,7 +115,7 @@ class ListComponent extends Component {
                           <td key={el.nombre}>{el.nombre}</td>
                           <td key={el.apellido}>{el.apellido}</td>
                           <td>
-                            <Button id="editar" variant="primary" onClick={() => this.editarAlumno(el) }>Editar</Button>
+                            <Button id="editar" variant="primary" onClick={() => this.returnStateObject(el) }>Editar</Button>
                             {"  "}
                             <Button id="borrar" variant="danger" onClick={() => this.eliminarAlumno(el) }>Borrar</Button>
                           </td>

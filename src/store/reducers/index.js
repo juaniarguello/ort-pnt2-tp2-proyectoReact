@@ -24,7 +24,7 @@ const initialState = {
 function getIndexAlumno(id){
   let i=0;
   let encontrado=false;
-  let alumno=null;
+  let alumno
   while(!encontrado && i<initialState.alumnos.length){
     alumno = initialState.alumnos[i];
     if(alumno.id === id){
@@ -41,18 +41,9 @@ function rootReducer(state=initialState, action) {
 
     switch (action.type) {
       case ADD_ALUMNO:
-        console.log('ID:' + action.data.id)
-        console.log('IA'+ getIndexAlumno(action.data.id) )
-        if(getIndexAlumno(action.data.id)!==-1){      //SI EXISTE EL ALUMNO, LO REEMPLAZO CON LOS DATOS NUEVOS
-          state.alumnos[action.data.id] = action.data
-          console.log('paso 1 ')
-        } else {   //Si no existe el alumno, lo agrego como uno nuevo
-          console.log('concatedo')
-          state = Object.assign({}, state , {
-            alumnos: state.alumnos.concat(action.data)
-          })
-        }
-        
+        state = Object.assign({}, state , {
+          alumnos: state.alumnos.concat(action.data)
+        })
         break
 
       case DELETE_ALUMNO:
@@ -63,8 +54,11 @@ function rootReducer(state=initialState, action) {
         break
 
       case EDIT_ALUMNO:
-        const indexAlumno = getIndexAlumno(action.data.id)
-        state.alumnos[indexAlumno] = action.data
+        console.log('state alumno array' + state.alumnos[0].nombre)
+        state.alumnos[0].nombre = 'pepe'
+        console.log('state alumno array' + state.alumnos[0].nombre) 
+        console.log('actualizado.' + JSON.stringify(state.alumnos[0]))
+
         break
 
       default:
