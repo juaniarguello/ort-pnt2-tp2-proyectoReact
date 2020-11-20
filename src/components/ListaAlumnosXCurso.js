@@ -46,13 +46,13 @@ class ListComponent extends Component {
     }
     
 
-
     editarAlumno(){
       this.props.propiedadEditAlumno({
         id: this.idAlumno.current.value,
         nombre: this.nombreAlumno.current.value,
         apellido: this.apellidoAlumno.current.value
       })  
+      this.resetFields()
     }
     
     returnStateObject(el) {
@@ -82,11 +82,11 @@ class ListComponent extends Component {
               </Form.Group>
               <Form.Group>
                 <Form.Label >Nombre del Alumno</Form.Label>
-                <Form.Control type="text" id="nombre" ref={this.nombreAlumno} placeholder="Ingresar nombre" />
+                <Form.Control type="text" id="nombre" ref={this.nombreAlumno} placeholder="Ingresar nombre" required='1' />
               </Form.Group>
               <Form.Group>
                 <Form.Label >Apellido del Alumno</Form.Label>
-                <Form.Control type="text" id="apellido" ref={this.apellidoAlumno} placeholder="Ingresar Apellido" />
+                <Form.Control type="text" id="apellido" ref={this.apellidoAlumno} placeholder="Ingresar Apellido" required="1" />
               </Form.Group>
               <Button id="agregarAlumno" variant="success" onClick={ this.agregarAlumno }>
                 Agregar

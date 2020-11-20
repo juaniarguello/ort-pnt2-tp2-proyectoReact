@@ -27,11 +27,11 @@ function getIndexAlumno(id){
   let alumno
   while(!encontrado && i<initialState.alumnos.length){
     alumno = initialState.alumnos[i];
-    if(alumno.id === id){
+    if(alumno.id == id){  // Si comparo con === siempre el resultado va a ser falso. No se por qué
       encontrado = true;
     } else {
        i++  
-      }  
+    }  
   }
   return i;
 }
@@ -47,20 +47,21 @@ function rootReducer(state=initialState, action) {
         break
 
       case DELETE_ALUMNO:
-        const aux = state.alumnos.filter(element => element.id !== action.data.id)
+        const aux = state.alumnos.filter(element => element.id !== action.data.id)  //Obtengo nuevo array SIN el alumno eliminado
         state = Object.assign({}, state , {
          alumnos: aux
         }) 
         break
 
       case EDIT_ALUMNO:
-        console.log('state alumno array' + state.alumnos[0].nombre)
-        state.alumnos[0].nombre = 'pepe'
-        console.log('state alumno array' + state.alumnos[0].nombre) 
-        console.log('actualizado.' + JSON.stringify(state.alumnos[0]))
-
-        break
-
+        const index = getIndexAlumno(action.data.id)
+        let auxx = state.alumnos
+        auxx[index] = action.data
+        state = Object.assign({}, state , {
+          alumnos: auxx
+         })  
+         break
+         
       default:
         
         break
