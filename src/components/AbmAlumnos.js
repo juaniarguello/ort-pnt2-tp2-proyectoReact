@@ -1,7 +1,8 @@
 import { connect } from 'react-redux'
 import React, { Component } from 'react'
 import { addAlumno, deleteAlumno, editAlumno } from '../store/actions'
-import { Form, Button, Table } from 'react-bootstrap'
+import { Form, Button } from 'react-bootstrap'
+import ListadoDeAlumnos from './ListadoDeAlumnos'
 
 const mapStateToProps = (state) => {
     return {
@@ -30,12 +31,14 @@ class ListComponent extends Component {
     }
 
     agregarAlumno() {
-      this.props.propiedadAddAlumno({
-        id: this.props.propiedadAlumnos.length + 1,
-        nombre: this.nombreAlumno.current.value,
-        apellido: this.apellidoAlumno.current.value
-      })
-      this.resetFields()
+      if(this.prevenirVacio()){
+        this.props.propiedadAddAlumno({
+          id: this.props.propiedadAlumnos.length + 1,
+          nombre: this.nombreAlumno.current.value,
+          apellido: this.apellidoAlumno.current.value
+        })
+        this.resetFields()
+      }
     }
     
     eliminarAlumno(el) {
@@ -47,12 +50,14 @@ class ListComponent extends Component {
     
 
     editarAlumno(){
-      this.props.propiedadEditAlumno({
-        id: this.idAlumno.current.value,
-        nombre: this.nombreAlumno.current.value,
-        apellido: this.apellidoAlumno.current.value
-      })  
-      this.resetFields()
+      if(this.prevenirVacio()){
+        this.props.propiedadEditAlumno({
+          id: this.idAlumno.current.value,
+          nombre: this.nombreAlumno.current.value,
+          apellido: this.apellidoAlumno.current.value
+        })  
+        this.resetFields()
+      }
     }
     
     returnStateObject(el) {
@@ -66,7 +71,16 @@ class ListComponent extends Component {
       this.nombreAlumno.current.value = ''
       this.apellidoAlumno.current.value = ''
     }
-
+    prevenirVacio(){
+      const nombre = this.nombreAlumno.current.value;
+      const apellido = this.apellidoAlumno.current.value;
+      let enviar=true;
+      if(nombre===null || nombre==='' || apellido===null || apellido===''){
+        alert('El nombre o el apellido del alumno no pueden estar vacíos.')
+        enviar=false;
+      }
+      return enviar;
+    }
 
     render() {
         return (
@@ -76,19 +90,19 @@ class ListComponent extends Component {
             <hr />
             
             <Form>
-            <Form.Group>
+              <Form.Group>
                 <Form.Label >ID</Form.Label>
                 <Form.Control type="text" id="nombre" ref={this.idAlumno} readOnly="1" />
               </Form.Group>
               <Form.Group>
                 <Form.Label >Nombre del Alumno</Form.Label>
-                <Form.Control type="text" id="nombre" ref={this.nombreAlumno} placeholder="Ingresar nombre" required='1' />
+                <Form.Control type="text" id="nombre" ref={this.nombreAlumno} placeholder="Ingresar nombre" required="1" />
               </Form.Group>
               <Form.Group>
                 <Form.Label >Apellido del Alumno</Form.Label>
                 <Form.Control type="text" id="apellido" ref={this.apellidoAlumno} placeholder="Ingresar Apellido" required="1" />
               </Form.Group>
-              <Button id="agregarAlumno" variant="success" onClick={ this.agregarAlumno }>
+              <Button id="agregarAlumno" variant="success" type="submit" onClick={ this.agregarAlumno }>
                 Agregar
               </Button> {'        '}
               <Button id="btnEditarAlumno" variant="primary" onClick={this.editarAlumno }>
@@ -98,38 +112,13 @@ class ListComponent extends Component {
 
             <hr />
 
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th>N°</th>
-                  <th>Nombre</th>
-                  <th>Apellido</th>
-                  <th>Acción</th>
-                </tr>
-              </thead>
-              <tbody>
-                  {
-                    this.props.propiedadAlumnos.map(el => (
-                      <tr>
-                          <td key={el.id}>{el.id}</td>
-                          <td key={el.nombre}>{el.nombre}</td>
-                          <td key={el.apellido}>{el.apellido}</td>
-                          <td>
-                            <Button id="editar" variant="primary" onClick={() => this.returnStateObject(el) }>Editar</Button>
-                            {"  "}
-                            <Button id="borrar" variant="danger" onClick={() => this.eliminarAlumno(el) }>Borrar</Button>
-                          </td>
-                      </tr>
-                    ))
-                  }
-              </tbody>
-            </Table>
+            <ListadoDeAlumnos alumnos={this.props.propiedadAlumnos} eliminarAlumno={(el)=>this.eliminarAlumno(el)} returnStateObject={(el)=>this.returnStateObject(el)}/>
 
           </div>
         )
     }
 }
 
-const ListaAlumnosXCurso = connect(mapStateToProps, mapDispatchToProps)(ListComponent)
+const AbmAlumnos = connect(mapStateToProps, mapDispatchToProps)(ListComponent)
 
-export default ListaAlumnosXCurso
+export default AbmAlumnos
