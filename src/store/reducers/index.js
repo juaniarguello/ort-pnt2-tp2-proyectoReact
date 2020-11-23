@@ -3,6 +3,7 @@ import {ADD_ALUMNO, DELETE_ALUMNO, EDIT_ALUMNO} from '../constants/action_types'
 const initialState = {
   curso: '2-1-B',
   alumnos: [
+    //Array hardcodeado para pruebas
     {
       id: 1,
       nombre: "Jorge",
@@ -54,6 +55,8 @@ function rootReducer(state=initialState, action) {
         break
 
       case EDIT_ALUMNO:
+        // La función editar no la pude hacer renderizar en el DOM,
+        // Sí actualiza dentro del state, pero no lo renderiza al instante.
         const index = getIndexAlumno(action.data.id)
         let auxx = state.alumnos
         auxx[index] = action.data
@@ -61,7 +64,6 @@ function rootReducer(state=initialState, action) {
           alumnos: auxx
          })  
          break
-         
       default:
         
         break

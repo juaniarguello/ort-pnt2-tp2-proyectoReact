@@ -5,7 +5,7 @@ const Item = ({ onClick, completed, text}) => (
   <li className={'item'}
     onClick={onClick}
     style={{
-      textDecoration: completed ? 'line-through' : 'none'
+      textDecoration: completed ? 'line-through' : 'none', width: '500px', margin:'auto'
     }}
   >
     {text}

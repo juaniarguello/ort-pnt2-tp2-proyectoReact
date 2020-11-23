@@ -6,8 +6,8 @@ import ListadoDeAlumnos from './ListadoDeAlumnos'
 
 const mapStateToProps = (state) => {
     return {
-        propiedadCurso: state.curso,
-        propiedadAlumnos: state.alumnos,
+        propiedadCurso: state.alumnos.curso,
+        propiedadAlumnos: state.alumnos.alumnos,
     }
 }
 
@@ -85,22 +85,22 @@ class ListComponent extends Component {
     render() {
         return (
           <div>
-            <h3>Curso {this.props.propiedadCurso}</h3>
+            <h3 style={{marginTop: '10px', marginBottom:'-30px'}}>Curso {this.props.propiedadCurso}</h3>
             <br />
             <hr />
             
             <Form>
               <Form.Group>
                 <Form.Label >ID</Form.Label>
-                <Form.Control type="text" id="nombre" ref={this.idAlumno} readOnly="1" />
+                <Form.Control type="text" id="nombre" ref={this.idAlumno} readOnly="1" style={{width: '300px', margin: 'auto'}}/>
               </Form.Group>
               <Form.Group>
                 <Form.Label >Nombre del Alumno</Form.Label>
-                <Form.Control type="text" id="nombre" ref={this.nombreAlumno} placeholder="Ingresar nombre" required="1" />
+                <Form.Control type="text" id="nombre" ref={this.nombreAlumno} placeholder="Ingresar nombre" required="1"  style={{width: '300px', margin: 'auto'}}/>
               </Form.Group>
               <Form.Group>
                 <Form.Label >Apellido del Alumno</Form.Label>
-                <Form.Control type="text" id="apellido" ref={this.apellidoAlumno} placeholder="Ingresar Apellido" required="1" />
+                <Form.Control type="text" id="apellido" ref={this.apellidoAlumno} placeholder="Ingresar Apellido" required="1" style={{width: '300px', margin: 'auto'}}/>
               </Form.Group>
               <Button id="agregarAlumno" variant="success" type="submit" onClick={ this.agregarAlumno }>
                 Agregar
