@@ -3,10 +3,6 @@ import { Table, Button } from 'react-bootstrap'
 
 class ListadoDeAlumnos extends Component{
 
-    handleReturnStateObject(el){
-        this.props.returnStateObject(el)
-    }
-
     render(){
         return(
             <div>
