@@ -1,47 +1,37 @@
-import React, {Component} from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { addItems } from '../store/actions/listaDeTareas';
-import ListadoDeTareas from './ListadoDeTareas'
+import ListaDeTareas from './ListadoDeTareas'
+const App = ({ qty, dispatch }) => {
+    let input, item;
 
-const mapDispatchToProps = dispatch => ({
-    addItems: item => dispatch(addItems(item))
-})
-
-class AgregarTareas extends Component {
-    constructor(){
-        super();
-        this.input = React.createRef();
-    }
-
-
-    handleSubmit = (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        if (!this.input.current.value.trim()) { return }
-        const item = {
-            text: this.input.current.value,
+        if (!input.value.trim()) { return }
+        item = {
+            text: input.value
         }
-        this.props.dispatch(addItems(item));
-        this.input.current.value = '';
-    }
+        dispatch(addItems(item));
+        console.log(item)
+        input.value = '';
+    };
 
-    render(){
-        return(
-            <div className={'div-wrapper'}>
-                <h1>LISTA DE TAREAS </h1>
-                <form onSubmit={this.handleSubmit} >
-                    <div className={'div-wrapper'}>
-                    <label>Tarea: {'          '}</label>
-                        <input type="text" name="name" ref={this.input} />
-                    </div>
-                    <div className={'div-wrapper'}>
-                        <label>&nbsp;</label>
-                        <input type="submit" value="Agregar Tarea" />
-                    </div>
-                </form>
-                <ListadoDeTareas />
-            </div>
-        )
-    }
+    return (
+        <div className={'wrapper'}>
+            <h1>TODOS</h1>
+            <form onSubmit={handleSubmit} >
+                <div className={'div-wrapper'}>
+                    <label>Todo: </label>
+                    <input type="text" name="name" ref={node => (input = node)} />
+                </div>
+                <div className={'div-wrapper'}>
+                    <label>&nbsp;</label>
+                    <input type="submit" value="Submit" />
+                </div>
+            </form>
+            <ListaDeTareas></ListaDeTareas>
+        </div>
+    )
 }
 
-export default connect(mapDispatchToProps)(AgregarTareas)
+export default connect()(App)
