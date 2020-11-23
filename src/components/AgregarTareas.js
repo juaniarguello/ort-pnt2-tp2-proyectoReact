@@ -2,7 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { addItems } from '../store/actions/listaDeTareas';
 import ListaDeTareas from './ListadoDeTareas'
-const App = ({ qty, dispatch }) => {
+import { Button } from 'react-bootstrap';
+
+const App = ({ dispatch }) => {
     let input, item;
 
     const handleSubmit = (e) => {
@@ -18,18 +20,20 @@ const App = ({ qty, dispatch }) => {
 
     return (
         <div className={'wrapper'}>
-            <h1>TODOS</h1>
+            <h1>Lista de Tareas</h1>
             <form onSubmit={handleSubmit} >
                 <div className={'div-wrapper'}>
-                    <label>Todo: </label>
+                    <label>Tarea: </label>
                     <input type="text" name="name" ref={node => (input = node)} />
                 </div>
                 <div className={'div-wrapper'}>
-                    <label>&nbsp;</label>
-                    <input type="submit" value="Submit" />
                 </div>
+                    <label>&nbsp;</label>
+                    <Button type="submit" variant="primary">Agregar Tarea</Button>
             </form>
-            <ListaDeTareas></ListaDeTareas>
+            <p style={{color: 'red'}}>Hace click en alguna tarea para marcarla como finalizada</p>
+            
+            <ListaDeTareas />
         </div>
     )
 }

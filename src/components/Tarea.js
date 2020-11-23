@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const Item = ({ onClick, completed, text, number }) => (
+const Item = ({ onClick, completed, text}) => (
   <li className={'item'}
     onClick={onClick}
     style={{
